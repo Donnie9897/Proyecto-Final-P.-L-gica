@@ -1,11 +1,11 @@
-# Smart Room Intelligent Agent
+#Simulador Smart Home
 
-### Install Dependencies
-In order to use the software, first install SWI-Prolog and Python.
-Then, install all the Python libraries contained in the Requirements.
+## Para instalar las dependecias
+Instala primero el comando PIP (si usas windows), luego instala las dependencias dentro del archivo "requerimientos.txt"
+Comando: pip install requerimientos.txt
 
-### Run the software
-In order to run the system, just run main.py.
+## Corre el software
+Para correr el programa, simplmente usa el comando: python main.py
 
 
 
