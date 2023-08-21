@@ -1,0 +1,17 @@
+setSensorValue(brillo_afuera, 0)
+setSensorValue(brillo_adentro, 0)
+setSensorValue(temperatura_adentro, 29)
+setSensorValue(temperatura_afuera, 27)
+setSensorValue(ruido_afuera, 5)
+setSensorValue(brisa_afuera, 9)
+setSensorValue(lluvia_afuera, 1)
+setEffector(l1,0).
+setEffector(l2,0).
+setEffector(l3,0).
+setEffector(l4,0).
+setEffector(w1,0).
+setEffector(w2,0).
+setEffector(ac,20).
+setEffector(r,0).
+set(apagar_luces, light).
+set(apagar_luces, temp).
