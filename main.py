@@ -48,7 +48,7 @@ window.columnconfigure(1, weight=1)
 window.columnconfigure(2, weight=1)
 
 
-frame1 = tk.Frame(window, background="#F5F5F5", heigh="100", width="200")
+frame1 = tk.Frame(window, background="#FFFFFF", heigh="100", width="200")
 frame2 = tk.Frame(window, background="#F2EAD3", heigh="100", width="200")
 frame3 = tk.Frame(window, background="#F2EAD3", heigh="100",width="200")
 frame4 = tk.Frame(window, background="#F2EAD3", heigh="100", width="200")
@@ -78,7 +78,7 @@ def modify_profile():
      modify_action_combobox.grid(row=0, column=2)
      modify_action_combobox["state"] = "readonly"
 
-     label_light = tk.Label(window4, text="Light", font=("Microsoft YaHei",10, BOLD))
+     label_light = tk.Label(window4, text="Luz", font=("Microsoft YaHei",10, BOLD))
      label_light.grid(row=1, column=1)
      light_selected = tk.StringVar()
      light_combobox = ttk.Combobox(window4, textvariable=light_selected)
@@ -87,7 +87,7 @@ def modify_profile():
      light_combobox["state"] = "readonly"
 
     
-     label_temp = tk.Label(window4, text="Temperature", font=("Microsoft YaHei",10,BOLD))
+     label_temp = tk.Label(window4, text="Temperatura", font=("Microsoft YaHei",10,BOLD))
      label_temp.grid(row=2, column=1)
      temp_selected = tk.StringVar()
      temp_combobox = ttk.Combobox(window4, textvariable=temp_selected)
@@ -95,7 +95,7 @@ def modify_profile():
      temp_combobox.grid(row=2, column=2)
      temp_combobox["state"] = "readonly"
 
-     label_wind = tk.Label(window4, text="Wind", font=("Microsoft YaHei",10, BOLD))
+     label_wind = tk.Label(window4, text="Brisa", font=("Microsoft YaHei",10, BOLD))
      label_wind.grid(row=3, column=1)
      wind_selected = tk.StringVar()
      wind_combobox = ttk.Combobox(window4, textvariable=wind_selected)
@@ -104,7 +104,7 @@ def modify_profile():
      wind_combobox["state"] = "readonly"
 
 
-     label_noise = tk.Label(window4, text="Noise", font=("Microsoft YaHei",10, BOLD))
+     label_noise = tk.Label(window4, text="Ruido", font=("Microsoft YaHei",10, BOLD))
      label_noise.grid(row=4, column=1)
      noise_selected = tk.StringVar()
      noise_combobox = ttk.Combobox(window4, textvariable=noise_selected)
@@ -123,7 +123,7 @@ def modify_profile():
           def update_facts():
             Profile.updateFacts(prolog, new_profile)
 
-          button_confirm= tk.Button(window4, text="Confirm", bg='#BCA6E8', font=("Microsoft YaHei",12, BOLD), command=update_facts)
+          button_confirm= tk.Button(window4, text="Confirmar", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=update_facts)
           button_confirm.grid(row=5, column=1)
           
      modify_action_combobox.bind("<<ComboboxSelected>>", new_profile)
@@ -144,8 +144,8 @@ def show_profile():
      label_profile = tk.Label(window3, text=profile, wraplength= 400, font=("Microsoft YaHei",10))
      label_profile.pack()
 
-     button_modify_profile= tk.Button(window3, text="Modify", bg='#BCA6E8', font=("Microsoft YaHei",12, BOLD), command=modify_profile)
-     button_modify_profile.place(x=310, y=650)
+     button_modify_profile= tk.Button(window3, text="Modificar Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=modify_profile)
+     button_modify_profile.place(x=290, y=650)
      
      window3.mainloop()
 
@@ -163,7 +163,7 @@ def simulate_gas_leak():
     label_alert = tk.Label(alert_window, text="¡Alerta! Se ha detectado una fuga de gas.", font=("Microsoft YaHei", 12, BOLD), padx=10, pady=10)
     label_alert.pack()
     
-    button_acknowledge = tk.Button(alert_window, text="Aceptar", bg='#BCA6E8', font=("Microsoft YaHei", 12, BOLD), command=alert_window.destroy)
+    button_acknowledge = tk.Button(alert_window, text="Aceptar", bg='#FFCACC', font=("Microsoft YaHei", 12, BOLD), command=alert_window.destroy)
     button_acknowledge.pack(pady=10)
 
 def select_action(event):
@@ -189,21 +189,21 @@ def select_action(event):
 
 
 
-button_simulate = tk.Button(frame1, text="Perfil", bg='#BCA6E8', font=("Microsoft YaHei",12, BOLD), command=show_profile)
-button_simulate.place(x=20, y=20)
-
-label_welcome = tk.Label(frame1, text="  Simulador Smart Home+  ", bg='#F5F5F5', fg='#161EA1', font=("Microsoft YaHei",16, BOLD))
-label_welcome.pack(pady=10, padx=150, ipadx=20, ipady=20)
-
-button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#BCA6E8', font=("Microsoft YaHei",12, BOLD), command=simulate_sensors)
-button_simulate.pack(padx=100, pady=5)
-button_simulate.place(x=20, y=60)
-
-button_simulate =  tk.Button(frame1, text="Fuga", bg='#BCA6E8', font=("Microsoft YaHei",12, BOLD), command=simulate_gas_leak)
-button_simulate.pack(padx=10, pady=5)
+button_simulate = tk.Button(frame1, text="Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=show_profile)
 button_simulate.place(x=20, y=100)
 
-label_action = tk.Label(frame1, text="Selecciona lo que vas a hacer: ", bg="#F5F5F5", font=("Microsoft YaHei",10))
+label_welcome = tk.Label(frame1, text="  Simulador Smart Home+  ", bg='#FFFFFF', fg='#161EA1', font=("Microsoft YaHei",16, BOLD))
+label_welcome.pack(pady=10, padx=120, ipadx=20, ipady=10)
+
+button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simulate_sensors)
+button_simulate.pack(padx=100, pady=5)
+button_simulate.place(x=20, y=50)
+
+button_simulate =  tk.Button(frame1, text="Simular Fuga de Gas", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simulate_gas_leak)
+button_simulate.pack(padx=50, pady=50)
+button_simulate.place(x=800, y=50)
+
+label_action = tk.Label(frame1, text="Selecciona lo que vas a hacer: ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=20, padx=350)
 
 action_selected = tk.StringVar()
@@ -261,7 +261,7 @@ label_windows = tk.Label(frame3, text= "W1, W2 = Ventanas (Windows)", font=("Mic
 label_windows.grid()
 label_rs = tk.Label(frame3, text= "RS1, RS2 = Persianas Rolables", font=("Microsoft YaHei",10))
 label_rs.grid()
-label_rs = tk.Label(frame3, text= "P = Puerta (Door)", font=("Microsoft YaHei",10))
+label_rs = tk.Label(frame3, text= "P = Puerta", font=("Microsoft YaHei",10))
 label_rs.grid()
 label_gas = tk.Label(frame3, text= "GLP = Gas ", font=("Microsoft YaHei",10))
 label_gas.grid()

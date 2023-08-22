@@ -1,20 +1,30 @@
 def getProfile(prolog):
-    actions=['study', 'movie', 'sleep', 'clean', 'music']
-    type = ['light', 'temp', 'wind', 'noise' ]
+    actions = ["estudiar", "pelicula", "dormir", "musica", "limpiar", "cerrar_puerta", "abrir_puerta", "apagar_luces"]
+    type = ['light', 'temp', 'wind', 'noise']
 
-    text=""
+    text = ""
+    print("\n")
     for act in actions:
-        if act=="movie":
-             action="watching a movie "
-        elif act=="music":
-            action="listening music"
-        else: 
-            action= act +"ing"
-        text = text + "While the user is " + action + ", he/she want: \n"
+        if act == "pelicula":
+            action = "ver peliculas"
+        elif act == "musica":
+            action = "escuchar musica"
+        elif act == "cerrar_puerta":
+            continue
+        elif act == "abrir_puerta":
+            continue
+        elif act == "apagar_luces":
+            continue
+        else:
+            action = act
+        text = text + "El usuario eligió " + action + ", el/ella prefiere: \n"
         for t in type:
             preference = list(prolog.query("preference(" + act + ", " + t + ", V, E)"))
-            text = text + t + " " + str(preference[0]['V']) + "\n"
-        text = text +"\n\n"
+            if preference:
+                text = text + t + " " + str(preference[0]['V']) + "\n"
+            else:
+                text = text + t + " N/A\n"  # Handle case where preference is not available
+        text = text + "\n"
     return text
 
 def updateFacts(prolog, new_profile):
