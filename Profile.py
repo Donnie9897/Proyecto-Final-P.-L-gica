@@ -23,7 +23,7 @@ def getProfile(prolog):
             if preference:
                 text = text + t + " " + str(preference[0]['V']) + "\n"
             else:
-                text = text + t + " N/A\n"  # Handle case where preference is not available
+                text = text + t + " N/A\n"  # handle para cuando no se haya seleccionado ninguna accion. 
         text = text + "\n"
     return text
 

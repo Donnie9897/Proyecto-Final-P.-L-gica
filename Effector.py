@@ -33,6 +33,8 @@ def apply_security_effects(prolog):
 def setEffectorValue(effectorID, value, prolog):
     old_value = str(getEffectorValue(effectorID, prolog))
     list(prolog.query("replace_existing_fact(effectorValue(" + str(effectorID) +" ,"+str(old_value)+"), effectorValue(" + str(effectorID)+ ", "+str(value)+"))"))
+
+
     
 def generete_random_effectors(prolog):
     sensors = getAllEffectors(prolog)
@@ -49,10 +51,16 @@ def resetEffectors(prolog):
         setEffectorValue(k, "0", prolog)
 
 def checkPreferences(action, prolog):
-    #return bool(query("preference("+name+", _, _, _)"))
-    # open the logActions file in append
+
     f = open("logActions.txt", "a")
-    query_list = list(prolog.query("preference("+action+", T, V, E)"))
+    query_list = list(prolog.query("preference("+action+", T, V, E)")) #para especificar las acciones segun la sigla que toque
+    if action == 'abrir_puerta':
+        setEffectorValue('d', 1, prolog)  # Abrir la puerta
+    elif action == 'cerrar_puerta':
+        setEffectorValue('d', 0, prolog)  # Cerrar la puerta
+
+
+        
     i=0
     if len(query_list)>0:
         for pref in query_list:

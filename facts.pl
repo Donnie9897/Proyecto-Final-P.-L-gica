@@ -4,24 +4,11 @@ environmentCondition(temp).
 environmentCondition(noise).
 environmentCondition(wind).
 environmentCondition(rain).
+environmentCondition(door).
 
-securityCondition(wind).
-securityCondition(rain).
-securityCondition(noise).
+door_state(closed).
 
-securityEffector(effectorID1, condition1).
-securityEffector(effectorID2, condition2).
-
-% Hechos de condición de seguridad
-securityCondition(intrusion).
-securityCondition(fire).
-securityCondition(gas_leak).
-
-% Hechos de valores de sensores
-sensorValue(intrusion_sensor, 1). % Valor simulado para detección de intrusión
-sensorValue(fire_sensor, 0).      % Valor simulado para detección de incendio
-sensorValue(gas_sensor, 1).       % Valor simulado para detección de fuga de gas
-
+%Sensores segun la situacion o condicion
 %sensor(SensorId, IdCondition).
 :-dynamic(sensor/2).
 sensor(brillo_afuera, light).
@@ -31,29 +18,15 @@ sensor(temperatura_afuera, temp).
 sensor(ruido_afuera, noise).
 sensor(brisa_afuera, wind).
 sensor(lluvia_afuera, rain).
+sensor(puerta_abierta,door).
+sensor(puerta_cerrada,door).
 
-%SEGURIDAD /////////////////////////////////////////////////////
+
+%SEGURIDAD
 % Regla ficticia para ubicación actual (ejemplo)
-ubicacion_actual(juan, fuera).
-ubicacion_actual(ana, dentro).
-ubicacion_actual(maria, fuera).
-
-%Ejemplo de definición de hechos securityEffect para que va a ocurrir si una condicion
-securityEffect(gas_leak, [close_doors, turn_off_gas]).
-securityEffect(intrusion, [alert_security, turn_on_lights]).
-
-% Otros hechos relevantes
-residente(juan).
-residente(ana).
-residente(maria).
-
-
-% Hechos dinámicos para representar umbrales de activación para la parte de seguridad
-:- dynamic(securityThreshold/2).
-securityThreshold(wind, 5).  % Ejemplo: si el viento es mayor o igual a 5, activar medidas de seguridad
-securityThreshold(rain, 1).  % Ejemplo: si la lluvia es mayor o igual a 1, activar medidas de seguridad
-securityThreshold(noise, 8). % Ejemplo: si el ruido es mayor o igual a 8, activar medidas de seguridad
-securityThreshold(gas_leak,1). %Ejemplo: si el gas aumenta a 1
+actual_location(juan, fuera).
+actual_location(ana, dentro).
+actual_location(maria, fuera).
 
 
 
@@ -66,19 +39,20 @@ sensorValue(temperatura_adentro, 30).
 sensorValue(ruido_afuera, 3).
 sensorValue(brisa_afuera, 1).
 sensorValue(lluvia_afuera, 1).
+%sensorValue(door,1).
 
 
 %effector(EffectorId, IdCondition).
 :-dynamic(effector/2).
 effector(X, noise) :-
     effector(X, temp).
-effector(l1, light). /* main light */
-effector(l2, light). /* desk light */
-effector(l3, light). /* bedside (left) light */
+effector(l1, light). /* Luz principal */
+effector(l2, light). /* luz del escritorio */
+effector(l3, light). /* mecita de noche (izq)  */
 effector(l4, light). /* bedside (right) light */
-effector(rs1, light). /* roller shutter 1*/
+effector(rs1, light). /* persiana rolable 1*/
 effector(rs2, light). /* roller shutter 2*/
-effector(ac, temp).  /* air conditioner */
+effector(ac, temp).  /* aire acondicionado  */
 effector(r, temp). /* radiator */
 effector(w1, temp). /* window 1 */
 effector(w2, temp). /* window 2 */
@@ -86,12 +60,10 @@ effector(w1, wind).
 effector(w2, wind).
 effector(w1, rain).
 effector(w2, rain).
-%Definir effectores para fuga de gas y fuego
-effector(close_doors, security).
-effector(turn_off_gas, security).
-effector(turn_on_lights, security).
+
+
 % Definición de efector para la puerta
-effector(d, noise).
+effector(d, door).
 
 
 
@@ -99,6 +71,8 @@ effector(d, noise).
 :-dynamic(inside/1).
 inside(brillo_adentro).
 inside(temperatura_adentro).
+inside(puerta_abierta).
+inside(puerta_cerrada).
 inside(l1).
 inside(l2).
 inside(l3).
@@ -120,7 +94,8 @@ effectorValue(rs1, 0). /* persiana rolable 1*/
 effectorValue(rs2, 0). /* persiana rolable 2*/
 effectorValue(r, 0). /* radiador */
 effectorValue(ac, 0). /* aire acondicionado (A.C) */
-effectorValue(d,0). /* puerta */
+effectorValue(d, 1). /* puerta */
+
 
 %preference(IdAction, IdCondition, ExpectedValueSensor, Effectors).
 :-dynamic(preference/4).
@@ -147,7 +122,6 @@ preference(limpiar, light, 10, [l1, rs1, rs2]). /* if clean only roller s*/
 preference(limpiar, temp, 20, [r, ac, w1,w2]). /* abrir las ventanas */
 preference(limpiar, wind, 0, [w1,w2]). /*Abre las ventanas por el viento */
 preference(limpiar, noise, 0, [ac, w1, w2]). /* Cierra las ventanas por el ruido */
-preference(limpiar, noise, 7, [d]). /*Abrir la puerta para limpiar */
 
 preference(musica, light, 5, [l1, l2, l3, l4, rs1, rs2]). 
 preference(musica, temp, 20, [ac, r, w1, w2]).
@@ -156,14 +130,23 @@ preference(musica, noise, 0, [ac, w1, w2]).
 
 %Cuando se elija apagar_luces los demas parametros se ajustan a la simulacion de sensores
 preference(apagar_luces, light, 0, [l1, l2, l3, l4]).
-preference(apagar_luces, temp, 20, [ac, r, w1, w2]).
+%preference(apagar_luces, temp, 20, [ac, r, w1, w2]).
 
-%TRABAJAR en cerrar_puerta
-preference(cerrar_puerta, noise, 1, [d]).
-preference(cerrar_puerta, temp, 18, [ac]).
+%Encender luz 1
+preference(luz_1, light, 10, [l1]).
+%Encender luz 2
+preference(luz_2, light, 10, [l2]).
+%Encender luz 3
+preference(luz_3, light, 10, [l3]).
+%Encender luz 4
+preference(luz_4, light, 10, [l4]).
 
-preference(abrir_puerta, noise, 10, [d]).
-preference(abrir_puerta, temp, 0, [ac]).
-preference(abrir_puerta, light, 10, [l1, rs1]). 
+
+%TRABAJAR en cerrar_puerta y abrir_puerta
+%preference(abrir_puerta, door_state, 1, [d]) :- door_state(closed).
+
+%Abrir puerta 
+%preference(abrir_puerta, door_state, 1, [d]) :- door_state(open).
+
 
 

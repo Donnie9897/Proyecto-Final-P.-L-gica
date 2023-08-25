@@ -33,7 +33,7 @@ setEffectors([H|T], Y) :-
     !,
     setEffectors(T, Y),
 	replace_existing_fact(effectorValue(H,_), effectorValue(H, Y)),
-    % write in a file the line of code to set the effector H to the value Y
+    % escribe en el archivo que el valor del effector H es Y 
     open('logActions.txt', append, Stream),
     write(Stream, 'setEffector('), write(Stream, H), write(Stream, ','), write(Stream, Y), write(Stream, ').'),nl(Stream),
     close(Stream).
@@ -42,7 +42,7 @@ setEffectors([H|T], Y) :-
 setEffectors([H|_], Y) :-
     !,
 	replace_existing_fact(effectorValue(H,_), effectorValue(H, Y)),
-    % write in a file the line of code to set the effector H to the value Y
+    % escribe en el archivo que el valor del effector H es Y 
     open('logActions.txt', append, Stream),
     write(Stream, 'setEffector('), write(Stream, H), write(Stream, ','), write(Stream, Y), write(Stream, ').'),nl(Stream),
     close(Stream).
@@ -126,7 +126,10 @@ set(IdAction, light) :-
 	setInsideEffectors(Effectors, Y).
 
 setInsideEffectors_temp(X_temp_inside, Y_temp) :-
-    (X_temp_inside < Y_temp ->  setEffectors([r], Y_temp), setEffectors([ac], 0); setEffectors([ac], Y_temp), setEffectors([r], 0) ).
+    (X_temp_inside < Y_temp ->  setEffectors([r], Y_temp), 
+    setEffectors([ac], 0); 
+    setEffectors([ac], Y_temp),
+    setEffectors([r], 0) ).
 
 
 
@@ -151,7 +154,7 @@ set(IdAction, temp) :-
     sensorValue(SensorId_insideTemp, X_inside),
     X_inside < Y_temp,
     X_outside > Y_temp,
-	%check the value of the sensor wind 
+	%verificar el valor del sensor para la brisa
     sensor(SensorId_wind, wind),
     outside(SensorId_wind),
     sensorValue(SensorId_wind, X_wind),
@@ -271,24 +274,6 @@ memberCheck(H,[H|_]).
 memberCheck(H,[_|T]) :- memberCheck(H,T).
 
 
-%Reglas para SEGURIDAD //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-apply_security_conditions(Condition) :-
-    securityCondition(Condition),
-    sensorValue(Condition, Value),
-    securityThreshold(Condition, Threshold),
-    Value >= Threshold,
-    setof(Effector, effector(Effector, Condition), Effectors),
-    apply_effects(Effectors, 1). % Activar efectores de seguridad
-
-apply_security_conditions(_).
-
-
-
-%Reglas para aplicar los efectos de las condiciones de seguridad
-apply_effects([], _).
-apply_effects([Effector | Rest], Action) :-
-    apply_effect(Effector, Action),
-    apply_effects(Rest, Action).
 
 
 %Regla para cuando una persona sale de la casa

@@ -199,18 +199,23 @@ button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#FFCACC', f
 button_simulate.pack(padx=100, pady=5)
 button_simulate.place(x=20, y=50)
 
-button_simulate =  tk.Button(frame1, text="Simular Fuga de Gas", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simulate_gas_leak)
-button_simulate.pack(padx=50, pady=50)
-button_simulate.place(x=800, y=50)
 
 label_action = tk.Label(frame1, text="Selecciona lo que vas a hacer: ", bg="#FFFFFF", font=("Microsoft YaHei",10))
-label_action.pack(pady=20, padx=350)
+label_action.pack(pady=10, padx=350)
 
 action_selected = tk.StringVar()
 action_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-action_combobox["values"] = ["estudiar", "pelicula", "dormir", "musica", "limpiar","cerrar_puerta","abrir_puerta", "apagar_luces"]
+action_combobox["values"] = ["estudiar", "pelicula", "dormir", "musica", "limpiar","cerrar_puerta","abrir_puerta"]
 action_combobox.pack(pady=5)
 action_combobox["state"] = "readonly"
+label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
+label_action.pack(pady=10, padx=350)
+individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
+individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4"]
+individual_combobox.pack(pady=5)
+#individual_combobox.set("Component Individual")
+individual_combobox["state"] = "readonly"
+
 
 
 Effector.generete_random_effectors(prolog)
@@ -227,8 +232,22 @@ for k, v in effectors.items():
     i=i+1
 
 
+
+
+def set_ac():
+    prolog = Prolog()
+    effector_id = "ac"
+    new_value = 20
+    # Carga tu base de conocimientos de Prolog desde facts.pl
+    prolog.consult("facts.pl")
+
+    #query = f"assert(effectorValue({effector_id}, {new_value}))"
+    Effector.checkPreferences("luz_1", prolog)
+   # Effector.setEffectorValue('l1', 10, prolog)
+    #list(prolog.query("(effectorValue("")"))
+
 def select_action(event):
-      Effector.resetEffectors(prolog)
+     # Effector.resetEffectors(prolog)
       Effector.checkPreferences(action_selected.get(), prolog)
 
       effectors = Effector.getAllEffectors(prolog)
@@ -246,6 +265,7 @@ def select_action(event):
       
 
 action_combobox.bind("<<ComboboxSelected>>", select_action)
+individual_combobox.bind("<<ComboboxSelected>>", select_action)
 
 photo = ImageTk.PhotoImage(file='pianta stanza2.png')
 label_image = tk.Label(frame3, image=photo, pady=0)
@@ -263,8 +283,8 @@ label_rs = tk.Label(frame3, text= "RS1, RS2 = Persianas Rolables", font=("Micros
 label_rs.grid()
 label_rs = tk.Label(frame3, text= "P = Puerta", font=("Microsoft YaHei",10))
 label_rs.grid()
-label_gas = tk.Label(frame3, text= "GLP = Gas ", font=("Microsoft YaHei",10))
-label_gas.grid()
+#label_gas = tk.Label(frame3, text= "GLP = Gas ", font=("Microsoft YaHei",10))
+#label_gas.grid()
 
 
 

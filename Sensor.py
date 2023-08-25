@@ -69,6 +69,8 @@ def generete_random_sensors(prolog):
         elif v[0] == 'rain':
             n = random.randint(0,1)
             setSensorValue(k, n, prolog)
+
+
         
         # print in the logActionas file the string setSensorValue(k, n)
         f.write("setSensorValue("+k+", "+str(n)+")\n")
