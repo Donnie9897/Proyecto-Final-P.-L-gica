@@ -211,9 +211,8 @@ action_combobox["state"] = "readonly"
 label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=10, padx=350)
 individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4"]
+individual_combobox["values"] = ["entrar_a_casa","apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas", "salir_de_casa"]
 individual_combobox.pack(pady=5)
-#individual_combobox.set("Component Individual")
 individual_combobox["state"] = "readonly"
 
 
@@ -230,8 +229,6 @@ for k, v in effectors.items():
     label_effector_value.grid(row=i, column=1, pady=7, padx=10)
 
     i=i+1
-
-
 
 
 def set_ac():
@@ -267,7 +264,7 @@ def select_action(event):
 action_combobox.bind("<<ComboboxSelected>>", select_action)
 individual_combobox.bind("<<ComboboxSelected>>", select_action)
 
-photo = ImageTk.PhotoImage(file='pianta stanza2.png')
+photo = ImageTk.PhotoImage(file='pianta stanza 3.png')
 label_image = tk.Label(frame3, image=photo, pady=0)
 label_image.grid()
 
@@ -279,7 +276,7 @@ label_r = tk.Label(frame3, text= "R = Radiador", font=("Microsoft YaHei",10))
 label_r.grid()
 label_windows = tk.Label(frame3, text= "W1, W2 = Ventanas (Windows)", font=("Microsoft YaHei",10))
 label_windows.grid()
-label_rs = tk.Label(frame3, text= "RS1, RS2 = Persianas Rolables", font=("Microsoft YaHei",10))
+label_rs = tk.Label(frame3, text= "PC1, PC2 = Persianas Corredizas", font=("Microsoft YaHei",10))
 label_rs.grid()
 label_rs = tk.Label(frame3, text= "P = Puerta", font=("Microsoft YaHei",10))
 label_rs.grid()

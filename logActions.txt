@@ -1,65 +1,20 @@
-setSensorValue(brillo_afuera, 9)
+setSensorValue(brillo_afuera, 2)
 setSensorValue(brillo_adentro, 0)
-setSensorValue(temperatura_adentro, 23)
-setSensorValue(temperatura_afuera, 25)
-setSensorValue(ruido_afuera, 7)
-setSensorValue(brisa_afuera, 8)
-setSensorValue(lluvia_afuera, 1)
-setEffector(rs1,0).
+setSensorValue(temperatura_adentro, 22)
+setSensorValue(temperatura_afuera, 30)
+setSensorValue(ruido_afuera, 0)
+setSensorValue(brisa_afuera, 6)
+setSensorValue(lluvia_afuera, 0)
+setEffector(pc1,0).
 setEffector(l2,10).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(ac,22).
-setEffector(r,0).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(ac,22).
-setEffector(r,0).
 set(estudiar, light).
 set(estudiar, temp).
 set(estudiar, wind).
 set(estudiar, noise).
-setEffector(l1,10).
-set(luz_1, light).
-setEffector(l1,0).
-setEffector(l2,0).
-setEffector(l3,0).
-setEffector(l4,0).
-set(apagar_luces, light).
-setEffector(rs1,0).
-setEffector(rs2,0).
-setEffector(l1,0).
-setEffector(l2,0).
-setEffector(l3,0).
-setEffector(l4,0).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(r,25).
-setEffector(ac,0).
-setEffector(w1,0).
-setEffector(w2,0).
-set(dormir, light).
-set(dormir, temp).
-set(dormir, wind).
-set(dormir, noise).
 setEffector(l3,10).
 set(luz_3, light).
-setEffector(rs1,10).
-setEffector(l2,0).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(ac,22).
-setEffector(r,0).
-setEffector(w1,0).
-setEffector(w2,0).
-setEffector(ac,22).
-setEffector(r,0).
-set(estudiar, light).
-set(estudiar, temp).
-set(estudiar, wind).
-set(estudiar, noise).
+setEffector(l4,10).
+set(luz_4, light).
 setEffector(l1,0).
 setEffector(l2,0).
 setEffector(l3,0).

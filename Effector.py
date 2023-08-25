@@ -59,8 +59,31 @@ def checkPreferences(action, prolog):
     elif action == 'cerrar_puerta':
         setEffectorValue('d', 0, prolog)  # Cerrar la puerta
 
+    elif action == "estudiar":
+        setEffectorValue('d',0,prolog) #Indicaciones para puerta cuando se decida estudiar
 
-        
+    elif action == "pelicula":
+        setEffectorValue('d',0,prolog) #Indicaciones para puerta cuando se decida ver una pelicula
+    
+    elif action == "dormir":
+        setEffectorValue('d',0,prolog)
+
+    elif action == "limpiar":
+        setEffectorValue('d',1,prolog)
+        setEffectorValue('w1',5,prolog)
+        setEffectorValue('w2',5,prolog)
+    
+    elif action == "abrir_persianas": #abrir persianas, como el nombre lo indica lol
+        setEffectorValue('pc1',5,prolog)
+        setEffectorValue('pc2',5,prolog)
+       
+    elif action == "cerrar_persianas":
+        setEffectorValue('pc1',0,prolog)
+        setEffectorValue('pc2',0,prolog)
+    
+    elif action == "entrar_a_casa":
+        setEffectorValue('d',1,prolog)
+
     i=0
     if len(query_list)>0:
         for pref in query_list:
