@@ -56,6 +56,7 @@ def checkPreferences(action, prolog):
     query_list = list(prolog.query("preference("+action+", T, V, E)")) #para especificar las acciones segun la sigla que toque
     if action == 'abrir_puerta':
         setEffectorValue('d', 1, prolog)  # Abrir la puerta
+   
     elif action == 'cerrar_puerta':
         setEffectorValue('d', 0, prolog)  # Cerrar la puerta
 
@@ -67,6 +68,7 @@ def checkPreferences(action, prolog):
     
     elif action == "dormir":
         setEffectorValue('d',0,prolog)
+ 
 
     elif action == "limpiar":
         setEffectorValue('d',1,prolog)
@@ -83,6 +85,16 @@ def checkPreferences(action, prolog):
     
     elif action == "entrar_a_casa":
         setEffectorValue('d',1,prolog)
+
+    elif action == "salir_de_casa":
+        setEffectorValue('d',0,prolog)
+
+    elif action == "abrir_ventanas":
+        setEffectorValue('w1',1,prolog)
+        setEffectorValue('w2',1,prolog)
+    elif action == "cerrar_ventanas":
+        setEffectorValue('w1',0,prolog)
+        setEffectorValue('w2',0,prolog)
 
     i=0
     if len(query_list)>0:

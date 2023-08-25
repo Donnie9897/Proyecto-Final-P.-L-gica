@@ -211,7 +211,7 @@ action_combobox["state"] = "readonly"
 label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=10, padx=350)
 individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-individual_combobox["values"] = ["entrar_a_casa","apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas", "salir_de_casa"]
+individual_combobox["values"] = ["entrar_a_casa","apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","abrir_ventanas","cerrar_ventanas", "salir_de_casa"]
 individual_combobox.pack(pady=5)
 individual_combobox["state"] = "readonly"
 

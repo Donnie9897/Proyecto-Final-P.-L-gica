@@ -12,7 +12,7 @@ door_state(closed).
 %sensor(SensorId, IdCondition).
 :-dynamic(sensor/2).
 sensor(brillo_afuera, light).
-sensor(brillo_adentro, light).
+%sensor(brillo_adentro, light).
 sensor(temperatura_adentro, temp).
 sensor(temperatura_afuera, temp).
 sensor(ruido_afuera, noise).
@@ -32,7 +32,7 @@ actual_location(maria, fuera).
 
 %sensorValue(SensorId, Value).
 :-dynamic(sensorValue/2).
-sensorValue(brillo_adentro, 0).
+%sensorValue(brillo_adentro, 0).
 sensorValue(brillo_afuera, 10).
 sensorValue(temperatura_afuera, 10).
 sensorValue(temperatura_adentro, 30).
@@ -69,7 +69,7 @@ effector(d, door).
 
 %inside(Id).
 :-dynamic(inside/1).
-inside(brillo_adentro).
+%inside(brillo_adentro).
 inside(temperatura_adentro).
 inside(puerta_abierta).
 inside(puerta_cerrada).

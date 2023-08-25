@@ -1,22 +1,14 @@
-setSensorValue(brillo_afuera, 2)
-setSensorValue(brillo_adentro, 0)
+setSensorValue(brillo_afuera, 4)
 setSensorValue(temperatura_adentro, 22)
-setSensorValue(temperatura_afuera, 30)
-setSensorValue(ruido_afuera, 0)
-setSensorValue(brisa_afuera, 6)
+setSensorValue(temperatura_afuera, 24)
+setSensorValue(ruido_afuera, 4)
+setSensorValue(brisa_afuera, 3)
 setSensorValue(lluvia_afuera, 0)
 setEffector(pc1,0).
 setEffector(l2,10).
+setEffector(w1,0).
+setEffector(w2,0).
 set(estudiar, light).
 set(estudiar, temp).
 set(estudiar, wind).
 set(estudiar, noise).
-setEffector(l3,10).
-set(luz_3, light).
-setEffector(l4,10).
-set(luz_4, light).
-setEffector(l1,0).
-setEffector(l2,0).
-setEffector(l3,0).
-setEffector(l4,0).
-set(apagar_luces, light).
