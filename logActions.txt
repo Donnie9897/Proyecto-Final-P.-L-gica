@@ -1,34 +1,16 @@
-setSensorValue(brillo_afuera, 5)
-setSensorValue(temperatura_adentro, 29)
-setSensorValue(temperatura_afuera, 21)
-setSensorValue(ruido_afuera, 8)
-setSensorValue(brisa_afuera, 8)
+setSensorValue(brillo_afuera, 8)
+setSensorValue(temperatura_adentro, 21)
+setSensorValue(temperatura_afuera, 22)
+setSensorValue(ruido_afuera, 2)
+setSensorValue(brisa_afuera, 6)
 setSensorValue(lluvia_afuera, 1)
 setEffector(l2,10).
-setEffector(ac,22).
-setEffector(r,0).
+setEffector(r,22).
+setEffector(ac,0).
 set(estudiar, light).
 set(estudiar, temp).
 set(estudiar, wind).
 set(estudiar, noise).
-setEffector(l3,0).
-setEffector(l4,0).
-setEffector(ac,25).
-setEffector(r,0).
-set(pelicula, light).
-set(pelicula, temp).
-set(pelicula, wind).
-set(pelicula, noise).
-setEffector(l1,0).
-setEffector(l2,0).
-setEffector(l3,0).
-setEffector(l4,0).
-setEffector(ac,25).
-setEffector(r,0).
-set(dormir, light).
-set(dormir, temp).
-set(dormir, wind).
-set(dormir, noise).
 setEffector(l1,0).
 setEffector(l2,0).
 setEffector(l3,0).
@@ -41,18 +23,33 @@ set(musica, light).
 set(musica, temp).
 set(musica, wind).
 set(musica, noise).
-setEffector(l1,10).
+setEffector(l1,0).
+setEffector(l2,0).
+setEffector(l3,0).
+setEffector(l4,0).
+setEffector(r,25).
 setEffector(ac,0).
-setEffector(r,0).
+setEffector(r,25).
 setEffector(ac,0).
-setEffector(r,0).
-set(limpiar, light).
-set(limpiar, temp).
-set(limpiar, wind).
-set(limpiar, noise).
+set(dormir, light).
+set(dormir, temp).
+set(dormir, wind).
+set(dormir, noise).
+setEffector(l3,0).
+setEffector(l4,0).
+setEffector(r,25).
+setEffector(ac,0).
+setEffector(r,25).
+setEffector(ac,0).
+set(pelicula, light).
+set(pelicula, temp).
+set(pelicula, wind).
+set(pelicula, noise).
 setEffector(l2,10).
-setEffector(ac,25).
-setEffector(r,0).
+setEffector(r,25).
+setEffector(ac,0).
+setEffector(r,25).
+setEffector(ac,0).
 set(entrar_a_casa, light).
 set(entrar_a_casa, temp).
 set(entrar_a_casa, wind).
@@ -65,10 +62,10 @@ setEffector(ac,0).
 setEffector(r,0).
 set(salir_de_casa, light).
 set(salir_de_casa, temp).
-setEffector(l1,10).
-set(luz_1, light).
 setEffector(l1,0).
 setEffector(l2,0).
 setEffector(l3,0).
 setEffector(l4,0).
 set(apagar_luces, light).
+setEffector(l1,10).
+set(luz_1, light).

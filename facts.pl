@@ -1,6 +1,6 @@
 
 %Condiciones del ambiente
-%environmentCondition(IdCondition).
+%environmentCondition(IdCondicion).
 environmentCondition(light).
 environmentCondition(temp).
 environmentCondition(noise).
@@ -9,7 +9,7 @@ environmentCondition(rain).
 environmentCondition(puerta).
 
 %Sensores segun la situacion o condicion
-%sensor(SensorId, IdCondition).
+%sensor(SensorId, IdCondicion).
 :-dynamic(sensor/2).
 sensor(brillo_afuera, light).
 sensor(temperatura_adentro, temp).
@@ -21,7 +21,7 @@ sensor(puerta_abierta,puerta).
 sensor(puerta_cerrada,puerta).
 
 
-%sensorValue(SensorId, Value).
+%sensorValue(SensorId, Valor).
 :-dynamic(sensorValue/2).
 sensorValue(brillo_afuera, 10).
 sensorValue(temperatura_afuera, 10).
@@ -82,36 +82,32 @@ effectorValue(r, 0). /* radiador */
 effectorValue(ac, 0). /* aire acondicionado (A.C) */
 effectorValue(p, 0). /* puerta */
 
-
-%preference(IdAction, IdCondition, ExpectedValueSensor, Effectors).
+%preference(IdAccion, IdCondicion, ValorDelSensorEsperado, Effectores).
 :-dynamic(preference/4).
 preference(nullPreference, _, 0, []).
 preference(estudiar, light, 10, [l2]). /* Para estudiar, se deja solamente la luz del escritorio */
 preference(estudiar, temp, 22, [ac, r]).
-preference(estudiar, wind, 3, []). /* Cerrar las ventanas por la brisa*/
+preference(estudiar, wind, 3, []). /* brisa*/
 preference(estudiar, noise, 0, [ac]).
 
-preference(dormir, light, 0, [l1, l2, l3, l4]). /* apagar todas las luces y las persianas rolables */
+preference(dormir, light, 0, [l1, l2, l3, l4]). /* apagar todas las luces y las persianas corredizas */
 preference(dormir, temp, 25, [ac, r]).
-preference(dormir, wind, 0, []). /* cerrar las ventanas por la brisa*/
+preference(dormir, wind, 0, []). 
 preference(dormir, noise, 0, [ac]).
 
-preference(turn_off, IdCondition, 0, Effectors) :- setof(X, effector(X,IdCondition),Effectors).
-preference(turn_on, IdCondition, 10, Effectors) :- setof(X, effector(X,IdCondition),Effectors).
-
-preference(pelicula, light, 5, [l3,l4]). /*Para ver una pelicula, se dejan solamente las luces de las mesitas de noche */
+preference(pelicula, light, 5, [l3,l4]). /*Para ver una pelicula, se dejan solamente las luces de las mesitas de noche dependiendo del brillo afuera */
 preference(pelicula, temp, 25, [r, ac]).
 preference(pelicula, wind, 3, []). /*Cerrar las ventanas por la brisa */
 preference(pelicula, noise, 0, [ac]).
 
-preference(limpiar, light, 10, [l1]). /* if clean only roller s*/
-preference(limpiar, temp, 0, [r, ac]). /* abrir las ventanas */
-preference(limpiar, wind, 0, []). /*Abre las ventanas por la brisa */
-preference(limpiar, noise, 0, [ac]). /* Cierra las ventanas por el ruido */
+preference(limpiar, light, 10, [l1]). 
+preference(limpiar, temp, 0, [r, ac]). 
+preference(limpiar, wind, 0, []). 
+preference(limpiar, noise, 0, [ac]). /* Ruido del ambiente y el ac */
 
 preference(musica, light, 5, [l1, l2, l3, l4]). 
 preference(musica, temp, 20, [ac, r]).
-preference(musica, wind, 0, []). /* cerrar las ventanas por la brisa*/
+preference(musica, wind, 0, []). 
 preference(musica, noise, 0, [ac]).
 
 %Cuando se elija apagar_luces los demas parametros se ajustan a la simulacion de sensores
