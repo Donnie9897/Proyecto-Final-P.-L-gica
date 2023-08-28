@@ -34,11 +34,15 @@ def setEffectorValue(effectorID, value, prolog):
 
 def getACConsumption(prolog):
     ac_value = getEffectorValue('ac', prolog)  # Obtener el valor del aire acondicionado
-    # Realizar cálculos o conversiones si es necesario para obtener el consumo en kW
+
     ac_consumption = float(ac_value) * 0.5   # Realiza cálculos aquí
     return ac_consumption
 
-    
+def getRConsumption(prolog):
+    r_value  = getEffectorValue('r',prolog)
+    r_consumption = float(r_value)*0.5
+    return r_consumption
+
 def generete_random_effectors(prolog):
     sensors = getAllEffectors(prolog)
     for k, v in sensors.items():
@@ -48,12 +52,15 @@ def generete_random_effectors(prolog):
             setEffectorValue(k, random.randint(1,50), prolog)
 
 
-def resetEffectors(prolog):
+def reiniciarEffectores(prolog):
     effectors = getAllEffectors(prolog)
     for k, v in effectors.items():
         setEffectorValue(k, "0", prolog)
 
-def checkPreferences(action, prolog):
+
+
+def verPreferencias(action, prolog):
+
 
     f = open("logActions.txt", "a")
     query_list = list(prolog.query("preference("+action+", T, V, E)")) #para especificar las acciones segun la sigla que toque
@@ -63,12 +70,24 @@ def checkPreferences(action, prolog):
     elif action == 'cerrar_puerta':
         setEffectorValue('p',"cerrada", prolog)  # Cerrar la puerta
 
+
     elif action == "estudiar":
-        setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida estudiar
-        setEffectorValue('w1',"cerrada",prolog)
-        setEffectorValue('w2',"cerrada",prolog)
-        setEffectorValue('pc1',"cerrada",prolog)
-        setEffectorValue('pc2',"cerrada",prolog)
+
+        x = list(prolog.query("sensorValue(brisa_afuera, X)"))
+
+        if x and x[0]["X"] > 4:  # Verificar si el valor de brisa_afuera es mayor que 4
+          # Cerrar la ventana si hay una brisa mayor a 4 
+            setEffectorValue('w1',"cerrada",prolog)
+            setEffectorValue('w2','cerrada',prolog)
+            setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida estudiar
+            setEffectorValue('pc1',"cerrada",prolog)
+            setEffectorValue('pc2',"cerrada",prolog)
+        else:
+            setEffectorValue('w1', 'abierta', prolog)
+            setEffectorValue('w2',"cerrada",prolog)
+            setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida estudiar
+            setEffectorValue('pc1',"abierta",prolog)
+            setEffectorValue('pc2',"cerrada",prolog)
 
     elif action == "pelicula":
         setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida ver una pelicula
@@ -86,11 +105,25 @@ def checkPreferences(action, prolog):
  
 
     elif action == "limpiar":
-        setEffectorValue('p',"abierta",prolog)
-        setEffectorValue('w1',"abierta",prolog)
-        setEffectorValue('w2',"abierta",prolog)
-        setEffectorValue('pc1',"abierta",prolog)
-        setEffectorValue('pc2',"abierta",prolog)
+
+        x = list(prolog.query("sensorValue(brisa_afuera, X)"))
+
+        
+        if x and x[0]["X"] > 4:  # Verificar si el valor de brisa_afuera es mayor que 4
+            setEffectorValue('p',"cerrada",prolog)
+            setEffectorValue('w1',"cerrada",prolog)
+            setEffectorValue('w2',"cerrada",prolog)
+            setEffectorValue('pc1',"cerrada",prolog)
+            setEffectorValue('pc2',"cerrada",prolog)
+        else:
+            setEffectorValue('p',"abierta",prolog)
+            setEffectorValue('w1',"abierta",prolog)
+            setEffectorValue('w2',"abierta",prolog)
+            setEffectorValue('pc1',"abierta",prolog)
+            setEffectorValue('pc2',"abierta",prolog) 
+            if getEffectorValue('ac',prolog):
+                 setEffectorValue('ac',0,prolog)
+                 setEffectorValue('r',0,prolog)
         
     
     elif action == "abrir_persianas": #abrir persianas, como el nombre lo indica lol
@@ -102,7 +135,22 @@ def checkPreferences(action, prolog):
         setEffectorValue('pc2',"cerrada",prolog)
     
     elif action == "entrar_a_casa":
-        setEffectorValue('p',"abierta",prolog)
+        
+        x = list(prolog.query("sensorValue(brisa_afuera, X)"))
+        y = list(prolog.query("sensorValue(ruido_afuera, Y)"))
+
+        if x and x[0]["X"] > 4 or y and y[0]["Y"] > 5:  # Verificar si el valor de brisa_afuera es mayor que 4
+            setEffectorValue('p',"abierta",prolog)
+            setEffectorValue('w1',"cerrada",prolog)
+            setEffectorValue('w2',"cerrada",prolog)
+            setEffectorValue('pc1',"cerrada",prolog)
+            setEffectorValue('pc2',"cerrada",prolog)
+        else:
+            setEffectorValue('p',"abierta",prolog)
+            setEffectorValue('w1',"abierta",prolog)
+            setEffectorValue('w2',"abierta",prolog)
+            setEffectorValue('pc1',"cerrada",prolog)
+            setEffectorValue('pc2',"abierta",prolog) 
 
     elif action == "salir_de_casa":
         setEffectorValue('p',"cerrada",prolog)
@@ -112,9 +160,11 @@ def checkPreferences(action, prolog):
         setEffectorValue('pc2',"cerrada",prolog)
  
 
-    elif action == "abrir_ventanas":
+    elif action == "ventana_1":
         setEffectorValue('w1',"abierta",prolog)
+    elif action == "ventana_2":
         setEffectorValue('w2',"abierta",prolog)
+
     elif action == "cerrar_ventanas":
         setEffectorValue('w1',"cerrada",prolog)
         setEffectorValue('w2',"cerrada",prolog)

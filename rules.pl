@@ -10,14 +10,12 @@ remove_existing_fact(OldFact) :-
     retract(OldFact).
 
 
-
-
 %outside(Id).
 outside(Id) :- 
 	\+ inside(Id).
 
 
-%setInsideEffectors(Effectors, Value).
+%setInsideEffectors(Effectores, Valor).
 setInsideEffectors([H|T], Y) :-
     extractInsideEffectors([H|T], [], L),
     setEffectors(L, Y).
@@ -27,7 +25,7 @@ setOutsideEffectors([H|T], Y) :-
     extractOutsideEffectors([H|T], [], L),
     setEffectors(L, Y).
 
-%setEffectors(Effectors, Value).
+%setEffectors(Effectores, Valor).
 setEffectors([H|T], Y) :-
     T \== [],
     !,
@@ -50,7 +48,7 @@ setEffectors([H|_], Y) :-
 setEffectors(_, _).
     
 
-%extractInsideEffectors(List, NewList, variable).
+%extractInsideEffectors(Lista, ListaNueva, variable).
 extractInsideEffectors([H|T], L,X) :-
     T \== [],
     inside(H),
@@ -77,7 +75,7 @@ extractInsideEffectors(_, L, X) :-
     X = L.
  
 
-%extractOutsideEffectors(List, NewList, variable).
+%extractOutsideEffectors(Lista, ListaNueva, variable).
 extractOutsideEffectors([H|T], L,X) :-
     T \== [],
     outside(H),
@@ -132,9 +130,6 @@ setInsideEffectors_temp(X_temp_inside, Y_temp) :-
     setEffectors([r], 0) ).
 
 
-
-
-
 set(IdAction, temp) :-
     preference(IdAction, temp, Y_temp, EffectorsTemp),
     sensor(SensorId_insideTemp, temp),
@@ -154,7 +149,7 @@ set(IdAction, temp) :-
     sensorValue(SensorId_insideTemp, X_inside),
     X_inside < Y_temp,
     X_outside > Y_temp,
-	%verificar el valor del sensor para la brisa
+	%verificar el valor del sensor para la brisa/wind
     sensor(SensorId_wind, wind),
     outside(SensorId_wind),
     sensorValue(SensorId_wind, X_wind),
@@ -173,11 +168,6 @@ set(IdAction, temp) :-
     setOutsideEffectors(EffectorsTemp, 0),
 	setInsideEffectors_temp(X_inside, Y_temp)
     ).
-
-
-
-
-
 
 
 set(IdAction, temp) :-
@@ -209,7 +199,6 @@ set(IdAction, temp) :-
 
 
 
-    
 set(IdAction, temp) :-
     preference(IdAction, temp, Y_temp, EffectorsTemp),
     sensor(SensorId_outsideTemp, temp),
@@ -269,51 +258,8 @@ set(IdAction, noise) :-
 
 
 
-%memberCheck(Element, List).
+%memberCheck(Elemento, Lista). %funcion auxiliar para ver si existe un miembro en la lista  
 memberCheck(H,[H|_]).
 memberCheck(H,[_|T]) :- memberCheck(H,T).
 
 
-
-
-%Regla para cuando una persona sale de la casa
-persona_sale :-
-    todas_las_personas_salieron, % Verificar si todas las personas han salido de la casa
-    cerrar_puertas,              % Cerrar las puertas
-    apagar_luces.                % Apagar las luces
-
-%Regla  para verificar si todas las personas han salido de la casa
-todas_las_personas_salieron :-
-    findall(Persona, residente(Persona), Residentes),
-    % Verificar si todas las personas están fuera del hogar
-    todas_las_personas_afuera(Residentes).
-
-%Regla  para verificar si todas las personas están afuera
-todas_las_personas_afuera([]).
-todas_las_personas_afuera([Persona | Resto]) :-
-    persona_afuera(Persona),
-    todas_las_personas_afuera(Resto).
-
-%Regla  para determinar si una persona está afuera
-persona_afuera(Persona) :-
-    ubicacion_actual(Persona,fuera).
-
-persona_afuera(juan) :-   % Ejemplo: Juan está afuera
-    ubicacion_actual(juan, fuera).
-
-persona_afuera(ana) :-    % Ejemplo: Ana está afuera
-    ubicacion_actual(ana, fuera).
-
-persona_afuera(maria) :-  % Ejemplo: Maria está afuera
-    ubicacion_actual(maria, fuera).
-
-
-%Regla para cerrar las puertas
-cerrar_puertas :-
-    findall(Effector, effector(Effector, door), DoorEffectors),
-    setEffectors(DoorEffectors, 0). % Cierra las puertas (0 representa cerrado)
-
-%Regla para apagar las luces
-apagar_luces :-
-    findall(Effector, effector(Effector, light), LightEffectors),
-    setEffectors(LightEffectors, 0). % Apaga las luces (0 representa apagado)

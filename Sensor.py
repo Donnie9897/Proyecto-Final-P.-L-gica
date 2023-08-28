@@ -16,20 +16,15 @@ def getAllSensor(prolog):
             newdict[k]= [v, temp[0]["Y"]]
     return newdict
 
-def getSensorValue(sensorID, prolog):
+def getSensorValue(sensorID, prolog): #Obtener el valor de un sensor en especifico
     query_list = list(prolog.query("sensorValue(" + sensorID +" ,X)"))
     if len(query_list) == 1:
         return str(query_list[0]["X"])
     else: return query_list 
 
-def setSensorValue(sensorID, value, prolog):
+def setSensorValue(sensorID, value, prolog): 
     old_value = str(getSensorValue(sensorID, prolog))
     list(prolog.query("replace_existing_fact(sensorValue(" + str(sensorID) +" ,"+str(old_value)+"), sensorValue(" + str(sensorID)+ ", "+str(value)+"))." ))
-    
-#MEDIDAS PARA LA PARTE DE SEGURIDAD///////////////////////////////////
-def apply_security_conditions(prolog):
-    # Apply security conditions based on the rules defined in rules.pl
-    list(prolog.query("apply_security_conditions(_)."))
 
 
 def generete_random_sensors(prolog):

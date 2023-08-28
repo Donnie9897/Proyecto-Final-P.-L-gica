@@ -176,7 +176,7 @@ action_combobox["state"] = "readonly"
 label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=10, padx=350)
 individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","abrir_ventanas","cerrar_ventanas","abrir_puerta","cerrar_puerta"]
+individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","ventana_1","ventana_2","cerrar_ventanas","abrir_puerta","cerrar_puerta"]
 individual_combobox.pack(pady=5)
 individual_combobox["state"] = "readonly"
 
@@ -196,10 +196,17 @@ for k, v in effectors.items():
     i=i+1
 
 
+def increase_temperature():
+    #current_temperature = int(Effector.getEffectorValue('ac', prolog))
+    #new_temperature = current_temperature + 1
+    #temperature_label.config(text=f"AC Temperature: {new_temperature}°C")
+    action = 'aumentar_temperatura'
+    Effector.verPreferencias(action, prolog)
+    print(action)
 
 def select_action(event):
      # Effector.resetEffectors(prolog)
-      Effector.checkPreferences(action_selected.get(), prolog)
+      Effector.verPreferencias(action_selected.get(), prolog)
 
       effectors = Effector.getAllEffectors(prolog)
     
@@ -214,6 +221,14 @@ def select_action(event):
             i=i+1
 
  
+
+
+def decrease_temperature():
+    current_temperature = int(Effector.getEffectorValue('ac', prolog))
+    new_temperature = current_temperature - 1
+    Effector.setEffectorValue('ac', new_temperature, prolog)
+    #temperature_label.config(text=f"AC Temperature: {new_temperature}°C")
+
 
 action_combobox.bind("<<ComboboxSelected>>", select_action)
 individual_combobox.bind("<<ComboboxSelected>>", select_action)
@@ -231,6 +246,17 @@ ac_consumption_label.grid(row=i, column=0, pady=7, padx=10)
 ac_consumption_value_label = tk.Label(frame2, text="0 kW")  # Puedes inicializarlo en 0 kW
 ac_consumption_value_label.grid(row=i, column=1, pady=7, padx=10)
 
+r_consumption_label = tk.Label(frame2, text="Consumo de Radiador:")
+r_consumption_label.grid(row=i+1, column=0, pady=7, padx=10)
+r_consumption_value_label = tk.Label(frame2, text="0 kW")  # Puedes inicializarlo en 0 kW
+r_consumption_value_label.grid(row=i+1, column=1, pady=7, padx=10)
+
+
+lights_consumption_label = tk.Label(frame2, text="Consumo de las luces:")
+lights_consumption_label.grid(row=i+2, column=0, pady=7, padx=10)
+lights_consumption_value_label = tk.Label(frame2, text="0 kW")  # Puedes inicializarlo en 0 kW
+lights_consumption_value_label.grid(row=i+2, column=1, pady=7, padx=10)
+
 
 label_r = tk.Label(frame3, text= "R = Radiador", font=("Microsoft YaHei",10))
 label_r.grid()
@@ -240,18 +266,29 @@ label_rs = tk.Label(frame3, text= "PC1, PC2 = Persianas Corredizas", font=("Micr
 label_rs.grid()
 label_rs = tk.Label(frame3, text= "P = Puerta", font=("Microsoft YaHei",10))
 label_rs.grid()
-#label_gas = tk.Label(frame3, text= "GLP = Gas ", font=("Microsoft YaHei",10))
-#label_gas.grid()
 
-     
+
+"""
+# Agrega botones y etiquetas
+increase_button = tk.Button(frame1, text="Increase Temperature", command=increase_temperature)
+decrease_button = tk.Button(frame1, text="Decrease Temperature", command=decrease_temperature)
+temperature_label = tk.Label(frame1, text="AC Temperature: {}°C".format(Effector.getEffectorValue('ac', prolog)))
+
+increase_button.pack()
+decrease_button.pack()
+temperature_label.pack()
+"""     
 def update_screen():
     # Obtener valores de sensores y effectors utilizando Prolog
 
-    # Actualizar las etiquetas de texto con los valores
+    # Actualizar las etiquetas de texto con los valores de AC y el R
     ac_consumption = Effector.getACConsumption(prolog)
     ac_consumption_value_label.config(text=str(ac_consumption) + " kW")
 
-    # Resto del código para actualizar otras etiquetas y elementos en la pantalla
+    r_consumption = Effector.getRConsumption(prolog)
+    r_consumption_value_label.config(text=str(r_consumption) + " kW")
+
+
     
 def update_loop():
     while True:
@@ -259,27 +296,9 @@ def update_loop():
         time.sleep(1)  # Esperar 1 segundo
 
 
-update_thread = threading.Thread(target=update_loop)
+update_thread = threading.Thread(target=update_loop) #Hilo para que se vaya actualizando el valor del consumo del AC y el R
 update_thread.start()
-"""
 
-def explanation():
-     Explanation.getSensorValues()
-     Explanation.getEffectorsValue()
-
-     window2 = tk.Tk()
-     window2.title("Explicacion de situaciones")
-     window2.geometry("500x500")
-     window2.resizable(False, False)
-     txt = Explanation.getExplanation(prolog)
-     label_explanation = tk.Label(window2, text=txt, wraplength= 400, font=("Microsoft YaHei",10))
-     label_explanation.grid()
-     
-     window2.mainloop()
-
-button_explanation = tk.Button(frame4, text="Explicacion de situaciones", bg="#BCA6E8", font=("Microsoft YaHei",12, BOLD), command=explanation)
-button_explanation.grid(row = 10, column = 1, padx=10, pady=10)
-"""
 
 
 window.mainloop()

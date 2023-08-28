@@ -1,3 +1,5 @@
+
+%Condiciones del ambiente
 %environmentCondition(IdCondition).
 environmentCondition(light).
 environmentCondition(temp).
@@ -6,13 +8,10 @@ environmentCondition(wind).
 environmentCondition(rain).
 environmentCondition(puerta).
 
-door_state(closed).
-
 %Sensores segun la situacion o condicion
 %sensor(SensorId, IdCondition).
 :-dynamic(sensor/2).
 sensor(brillo_afuera, light).
-%sensor(brillo_adentro, light).
 sensor(temperatura_adentro, temp).
 sensor(temperatura_afuera, temp).
 sensor(ruido_afuera, noise).
@@ -22,27 +21,18 @@ sensor(puerta_abierta,puerta).
 sensor(puerta_cerrada,puerta).
 
 
-%SEGURIDAD
-% Regla ficticia para ubicación actual (ejemplo)
-actual_location(juan, fuera).
-actual_location(ana, dentro).
-actual_location(maria, fuera).
-
-
-
 %sensorValue(SensorId, Value).
 :-dynamic(sensorValue/2).
-%sensorValue(brillo_adentro, 0).
 sensorValue(brillo_afuera, 10).
 sensorValue(temperatura_afuera, 10).
 sensorValue(temperatura_adentro, 30).
 sensorValue(ruido_afuera, 3).
 sensorValue(brisa_afuera, 1).
 sensorValue(lluvia_afuera, 1).
-%sensorValue(p,1).
 
 
-%effector(EffectorId, IdCondition).
+
+%effector(EffectorId, IdCondicion).
 :-dynamic(effector/2).
 effector(X, noise) :-
     effector(X, temp).
@@ -50,8 +40,8 @@ effector(l1, light). /* Luz principal */
 effector(l2, light). /* luz del escritorio */
 effector(l3, light). /* mecita de noche (izq)  */
 effector(l4, light). /* bedside (right) light */
-effector(pc1, light). /* persiana rolable 1*/
-effector(pc2, light). /* roller shutter 2*/
+effector(pc1, light). /* persiana rodante 1*/
+effector(pc2, light). /* persiana rodante 2*/
 effector(ac, temp).  /* aire acondicionado  */
 effector(r, temp). /* radiator */
 effector(w1, temp). /* window 1 */
@@ -60,11 +50,7 @@ effector(w1, wind).
 effector(w2, wind).
 effector(w1, rain).
 effector(w2, rain).
-
-
-% Definición de efector para la puerta
 effector(p, puerta).
-
 
 
 %inside(Id).
@@ -119,7 +105,7 @@ preference(pelicula, wind, 3, []). /*Cerrar las ventanas por la brisa */
 preference(pelicula, noise, 0, [ac]).
 
 preference(limpiar, light, 10, [l1]). /* if clean only roller s*/
-preference(limpiar, temp, 20, [r, ac]). /* abrir las ventanas */
+preference(limpiar, temp, 0, [r, ac]). /* abrir las ventanas */
 preference(limpiar, wind, 0, []). /*Abre las ventanas por la brisa */
 preference(limpiar, noise, 0, [ac]). /* Cierra las ventanas por el ruido */
 
@@ -130,7 +116,6 @@ preference(musica, noise, 0, [ac]).
 
 %Cuando se elija apagar_luces los demas parametros se ajustan a la simulacion de sensores
 preference(apagar_luces, light, 0, [l1, l2, l3, l4]).
-
 
 %Encender luz 1
 preference(luz_1, light, 10, [l1]).
