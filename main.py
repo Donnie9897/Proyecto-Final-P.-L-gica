@@ -21,7 +21,7 @@ def initialize_prolog():
 
 
 def simulate_sensors():
-    Sensor.generete_random_sensors(prolog)
+    Sensor.generar_efectores(prolog)
     sensors = Sensor.getAllSensor(prolog)
 
     i=0
@@ -182,7 +182,7 @@ individual_combobox["state"] = "readonly"
 
 
 
-Effector.generete_random_effectors(prolog)
+Effector.generar_efectores(prolog)
 effectors = Effector.getAllEffectors(prolog)
 i=0
 for k, v in effectors.items():
@@ -288,7 +288,8 @@ def update_screen():
     r_consumption = Effector.getRConsumption(prolog)
     r_consumption_value_label.config(text=str(r_consumption) + " kW")
 
-
+    light_consumption = Effector.getlightsConsumption(prolog)
+    lights_consumption_value_label.config(text=str(light_consumption) + " kW")
     
 def update_loop():
     while True:

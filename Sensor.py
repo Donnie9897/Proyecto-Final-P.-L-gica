@@ -27,7 +27,7 @@ def setSensorValue(sensorID, value, prolog):
     list(prolog.query("replace_existing_fact(sensorValue(" + str(sensorID) +" ,"+str(old_value)+"), sensorValue(" + str(sensorID)+ ", "+str(value)+"))." ))
 
 
-def generete_random_sensors(prolog):
+def generar_efectores(prolog):
     sensors = getAllSensor(prolog)
     #import the date
     date = datetime.datetime.now()

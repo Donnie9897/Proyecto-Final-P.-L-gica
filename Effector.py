@@ -17,10 +17,11 @@ def getAllEffectors(prolog):
 
 
 def getEffectorValue(effectorID, prolog):
-    query_list = list(prolog.query("effectorValue(" + str(effectorID) +" ,X)"))
+    query_list = list(prolog.query("effectorValue(" + effectorID + " ,X)"))
     if len(query_list) == 1:
-        return str(query_list[0]["X"])
-    else: return query_list 
+        return query_list[0]["X"]
+    else:
+        return None
 
 
 
@@ -35,7 +36,7 @@ def setEffectorValue(effectorID, value, prolog):
 def getACConsumption(prolog):
     ac_value = getEffectorValue('ac', prolog)  # Obtener el valor del aire acondicionado
 
-    ac_consumption = float(ac_value) * 0.5   # Realiza cálculos aquí
+    ac_consumption = float(ac_value) * 0.5   
     return ac_consumption
 
 def getRConsumption(prolog):
@@ -43,7 +44,23 @@ def getRConsumption(prolog):
     r_consumption = float(r_value)*0.5
     return r_consumption
 
-def generete_random_effectors(prolog):
+def getlightsConsumption(prolog):
+    consumo_luces = 0
+    luces = ['l1', 'l2', 'l3', 'l4', 'l5']  # Lista de efectores de luces
+    potencia_luz = 10  # Potencia de una luz en vatios (por ejemplo)
+
+    for l in luces:
+        tiempo_encendido = getEffectorValue(l, prolog)  # Obtener el tiempo de encendido de la luz
+        if tiempo_encendido is not None:
+            consumo_luz = (potencia_luz / 1000) * int(tiempo_encendido)  # Calcular el consumo de la luz en kWh
+            consumo_luces += consumo_luz  # Sumar el consumo de cada luz
+
+    return consumo_luces  # Devolver el consumo total de las luces en kWh
+
+   
+    
+
+def generar_efectores(prolog):
     sensors = getAllEffectors(prolog)
     for k, v in sensors.items():
         if v[0] == 'light':
@@ -74,8 +91,9 @@ def verPreferencias(action, prolog):
     elif action == "estudiar":
 
         x = list(prolog.query("sensorValue(brisa_afuera, X)"))
+        y = list(prolog.query("sensorValue(lluvia_afuera, Y)"))
 
-        if x and x[0]["X"] > 4:  # Verificar si el valor de brisa_afuera es mayor que 4
+        if x and x[0]["X"] > 4 or y and y[0]["Y"]:  # Verificar si el valor de brisa_afuera es mayor que 4
           # Cerrar la ventana si hay una brisa mayor a 4 
             setEffectorValue('w1',"cerrada",prolog)
             setEffectorValue('w2','cerrada',prolog)
