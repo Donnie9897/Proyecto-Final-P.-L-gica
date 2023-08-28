@@ -17,23 +17,26 @@ def getAllEffectors(prolog):
 
 
 def getEffectorValue(effectorID, prolog):
-    query_list = list(prolog.query("effectorValue(" + effectorID +" ,X)"))
+    query_list = list(prolog.query("effectorValue(" + str(effectorID) +" ,X)"))
     if len(query_list) == 1:
         return str(query_list[0]["X"])
     else: return query_list 
 
 
-#Rglas para la parte de SEGURIDAD//////////////////////////////////////
-def apply_security_effects(prolog):
-    # Apply security effects based on the rules defined in rules.pl
-    list(prolog.query("apply_security_effects(_)."))
-
-
 
 def setEffectorValue(effectorID, value, prolog):
+    if effectorID == 'p':
+        value = "abierta" if value == "abierta" else "cerrada"
+    
     old_value = str(getEffectorValue(effectorID, prolog))
-    list(prolog.query("replace_existing_fact(effectorValue(" + str(effectorID) +" ,"+str(old_value)+"), effectorValue(" + str(effectorID)+ ", "+str(value)+"))"))
+    list(prolog.query("retract(effectorValue(" + str(effectorID) + " ," + str(old_value) + "))"))
+    list(prolog.query("asserta(effectorValue(" + str(effectorID) + " ," + str(value) + "))"))
 
+def getACConsumption(prolog):
+    ac_value = getEffectorValue('ac', prolog)  # Obtener el valor del aire acondicionado
+    # Realizar cálculos o conversiones si es necesario para obtener el consumo en kW
+    ac_consumption = float(ac_value) * 0.5   # Realiza cálculos aquí
+    return ac_consumption
 
     
 def generete_random_effectors(prolog):
@@ -55,46 +58,66 @@ def checkPreferences(action, prolog):
     f = open("logActions.txt", "a")
     query_list = list(prolog.query("preference("+action+", T, V, E)")) #para especificar las acciones segun la sigla que toque
     if action == 'abrir_puerta':
-        setEffectorValue('d', 1, prolog)  # Abrir la puerta
+        setEffectorValue('p','abierta', prolog)  # Abrir la puerta
    
     elif action == 'cerrar_puerta':
-        setEffectorValue('d', 0, prolog)  # Cerrar la puerta
+        setEffectorValue('p',"cerrada", prolog)  # Cerrar la puerta
 
     elif action == "estudiar":
-        setEffectorValue('d',0,prolog) #Indicaciones para puerta cuando se decida estudiar
+        setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida estudiar
+        setEffectorValue('w1',"cerrada",prolog)
+        setEffectorValue('w2',"cerrada",prolog)
+        setEffectorValue('pc1',"cerrada",prolog)
+        setEffectorValue('pc2',"cerrada",prolog)
 
     elif action == "pelicula":
-        setEffectorValue('d',0,prolog) #Indicaciones para puerta cuando se decida ver una pelicula
+        setEffectorValue('p',"cerrada",prolog) #Indicaciones para puerta cuando se decida ver una pelicula
+        setEffectorValue('w1',"cerrada",prolog)
+        setEffectorValue('w2',"cerrada",prolog)
+        setEffectorValue('pc1',"cerrada",prolog)
+        setEffectorValue('pc2',"cerrada",prolog)
     
     elif action == "dormir":
-        setEffectorValue('d',0,prolog)
+        setEffectorValue('p',0,prolog)
+        setEffectorValue('w1',"cerrada",prolog)
+        setEffectorValue('w2',"cerrada",prolog)
+        setEffectorValue('pc1',"cerrada",prolog)
+        setEffectorValue('pc2',"cerrada",prolog)
  
 
     elif action == "limpiar":
-        setEffectorValue('d',1,prolog)
-        setEffectorValue('w1',5,prolog)
-        setEffectorValue('w2',5,prolog)
+        setEffectorValue('p',"abierta",prolog)
+        setEffectorValue('w1',"abierta",prolog)
+        setEffectorValue('w2',"abierta",prolog)
+        setEffectorValue('pc1',"abierta",prolog)
+        setEffectorValue('pc2',"abierta",prolog)
+        
     
     elif action == "abrir_persianas": #abrir persianas, como el nombre lo indica lol
-        setEffectorValue('pc1',5,prolog)
-        setEffectorValue('pc2',5,prolog)
+        setEffectorValue('pc1',"abierta",prolog)
+        setEffectorValue('pc2',"abierta",prolog)
        
     elif action == "cerrar_persianas":
-        setEffectorValue('pc1',0,prolog)
-        setEffectorValue('pc2',0,prolog)
+        setEffectorValue('pc1',"cerrada",prolog)
+        setEffectorValue('pc2',"cerrada",prolog)
     
     elif action == "entrar_a_casa":
-        setEffectorValue('d',1,prolog)
+        setEffectorValue('p',"abierta",prolog)
 
     elif action == "salir_de_casa":
-        setEffectorValue('d',0,prolog)
+        setEffectorValue('p',"cerrada",prolog)
+        setEffectorValue('w1',"cerrada",prolog)
+        setEffectorValue('w2',"cerrada",prolog)
+        setEffectorValue('pc1',"cerrada",prolog)
+        setEffectorValue('pc2',"cerrada",prolog)
+ 
 
     elif action == "abrir_ventanas":
-        setEffectorValue('w1',1,prolog)
-        setEffectorValue('w2',1,prolog)
+        setEffectorValue('w1',"abierta",prolog)
+        setEffectorValue('w2',"abierta",prolog)
     elif action == "cerrar_ventanas":
-        setEffectorValue('w1',0,prolog)
-        setEffectorValue('w2',0,prolog)
+        setEffectorValue('w1',"cerrada",prolog)
+        setEffectorValue('w2',"cerrada",prolog)
 
     i=0
     if len(query_list)>0:

@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter.font import BOLD
 from tkinter import ttk
 from PIL import Image, ImageTk
+import time
+import threading
 import Sensor
 import Effector
 import Explanation
@@ -149,55 +151,18 @@ def show_profile():
      
      window3.mainloop()
 
-#SIMULAR UNA FUGA DE GAS
-def simulate_gas_leak():
-    # Aquí puedes realizar consultas y aplicar las reglas de seguridad relacionadas a la fuga de gas
-    # Por ejemplo, puedes llamar a la regla apply_security_effects(turn_off_gas) para simular la fuga de gas
-    
-    # Simular ventana emergente de alerta de gas
-    alert_window = tk.Toplevel(window)
-    alert_window.title("Alerta de Fuga de Gas")
-    alert_window.geometry("350x250")
-    alert_window.resizable(False, False)
-    
-    label_alert = tk.Label(alert_window, text="¡Alerta! Se ha detectado una fuga de gas.", font=("Microsoft YaHei", 12, BOLD), padx=10, pady=10)
-    label_alert.pack()
-    
-    button_acknowledge = tk.Button(alert_window, text="Aceptar", bg='#FFCACC', font=("Microsoft YaHei", 12, BOLD), command=alert_window.destroy)
-    button_acknowledge.pack(pady=10)
-
-def select_action(event):
-    selected_action = action_selected.get()
-    
-    if selected_action == "simular fuga de gas":
-        simulate_gas_leak()  # Llama a la función para simular la fuga de gas
-    else:
-        Effector.resetEffectors(prolog)
-        Effector.checkPreferences(selected_action, prolog)
-        effectors = Effector.getAllEffectors(prolog)
-        
-        i = 0
-        for k, v in effectors.items():
-            label_effector_name = tk.Label(frame4, text=k, font=("Microsoft YaHei", 10))
-            label_effector_name.grid(row=i, column=0, pady=7, padx=10)
-            
-            label_effector_value = tk.Label(frame4, text=v[1], font=("Microsoft YaHei", 10))
-            label_effector_value.grid(row=i, column=1, pady=7, padx=10)
-            
-            i += 1
 
 
-
-
+"""
 button_simulate = tk.Button(frame1, text="Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=show_profile)
 button_simulate.place(x=20, y=100)
-
+"""
 label_welcome = tk.Label(frame1, text="  Simulador Smart Home+  ", bg='#FFFFFF', fg='#161EA1', font=("Microsoft YaHei",16, BOLD))
 label_welcome.pack(pady=10, padx=120, ipadx=20, ipady=10)
 
 button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simulate_sensors)
 button_simulate.pack(padx=100, pady=5)
-button_simulate.place(x=20, y=50)
+button_simulate.place(x=10, y=170)
 
 
 label_action = tk.Label(frame1, text="Selecciona lo que vas a hacer: ", bg="#FFFFFF", font=("Microsoft YaHei",10))
@@ -205,13 +170,13 @@ label_action.pack(pady=10, padx=350)
 
 action_selected = tk.StringVar()
 action_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-action_combobox["values"] = ["estudiar", "pelicula", "dormir", "musica", "limpiar","cerrar_puerta","abrir_puerta"]
+action_combobox["values"] = ["entrar_a_casa","estudiar", "pelicula", "dormir", "musica", "limpiar", "salir_de_casa"]
 action_combobox.pack(pady=5)
 action_combobox["state"] = "readonly"
 label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=10, padx=350)
 individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-individual_combobox["values"] = ["entrar_a_casa","apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","abrir_ventanas","cerrar_ventanas", "salir_de_casa"]
+individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","abrir_ventanas","cerrar_ventanas","abrir_puerta","cerrar_puerta"]
 individual_combobox.pack(pady=5)
 individual_combobox["state"] = "readonly"
 
@@ -231,17 +196,6 @@ for k, v in effectors.items():
     i=i+1
 
 
-def set_ac():
-    prolog = Prolog()
-    effector_id = "ac"
-    new_value = 20
-    # Carga tu base de conocimientos de Prolog desde facts.pl
-    prolog.consult("facts.pl")
-
-    #query = f"assert(effectorValue({effector_id}, {new_value}))"
-    Effector.checkPreferences("luz_1", prolog)
-   # Effector.setEffectorValue('l1', 10, prolog)
-    #list(prolog.query("(effectorValue("")"))
 
 def select_action(event):
      # Effector.resetEffectors(prolog)
@@ -259,7 +213,7 @@ def select_action(event):
 
             i=i+1
 
-      
+ 
 
 action_combobox.bind("<<ComboboxSelected>>", select_action)
 individual_combobox.bind("<<ComboboxSelected>>", select_action)
@@ -270,8 +224,14 @@ label_image.grid()
 
 label_light = tk.Label(frame3, text= "L1, L2, L3, L4 = Luces", font=("Microsoft YaHei",10))
 label_light.grid()
-label_ac = tk.Label(frame3, text= "AC = Aire Acondicionado (A.C.)", font=("Microsoft YaHei",10))
-label_ac.grid()
+
+# Agrega una etiqueta para mostrar el consumo del aire acondicionado
+ac_consumption_label = tk.Label(frame2, text="Consumo de AC:")
+ac_consumption_label.grid(row=i, column=0, pady=7, padx=10)
+ac_consumption_value_label = tk.Label(frame2, text="0 kW")  # Puedes inicializarlo en 0 kW
+ac_consumption_value_label.grid(row=i, column=1, pady=7, padx=10)
+
+
 label_r = tk.Label(frame3, text= "R = Radiador", font=("Microsoft YaHei",10))
 label_r.grid()
 label_windows = tk.Label(frame3, text= "W1, W2 = Ventanas (Windows)", font=("Microsoft YaHei",10))
@@ -283,8 +243,24 @@ label_rs.grid()
 #label_gas = tk.Label(frame3, text= "GLP = Gas ", font=("Microsoft YaHei",10))
 #label_gas.grid()
 
+     
+def update_screen():
+    # Obtener valores de sensores y effectors utilizando Prolog
+
+    # Actualizar las etiquetas de texto con los valores
+    ac_consumption = Effector.getACConsumption(prolog)
+    ac_consumption_value_label.config(text=str(ac_consumption) + " kW")
+
+    # Resto del código para actualizar otras etiquetas y elementos en la pantalla
+    
+def update_loop():
+    while True:
+        update_screen()
+        time.sleep(1)  # Esperar 1 segundo
 
 
+update_thread = threading.Thread(target=update_loop)
+update_thread.start()
 """
 
 def explanation():
