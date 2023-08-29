@@ -1,26 +1,27 @@
 import tkinter as tk 
 from tkinter import *
-from tkinter.font import BOLD
 from tkinter import ttk
+from tkinter.font import BOLD
 from PIL import Image, ImageTk
 import time
+import Effector
 import threading
 import Sensor
-import Effector
-import Explanation
 import Profile
+import Explanation
+
 from pyswip import Prolog
 from Sensor import *
 new_preference={}
 
-def initialize_prolog():
+def inicializar_prolog():
     global prolog
     prolog = Prolog()
     prolog.consult("facts.pl")   
     prolog.consult("rules.pl") 
 
 
-def simulate_sensors():
+def simular_sensores():
     Sensor.generar_efectores(prolog)
     sensors = Sensor.getAllSensor(prolog)
 
@@ -38,7 +39,7 @@ def simulate_sensors():
     
 
 
-initialize_prolog()
+inicializar_prolog()
 window = tk.Tk()
 
 window.title("Smart Home")
@@ -66,7 +67,7 @@ frame4.pack(fill=BOTH, expand=True, side=LEFT)
 
      
 
-def modify_profile():
+def modificar_perfil():
      window4 = tk.Tk()
      window4.title("Modificar perfil")
      window4.geometry("300x300")
@@ -114,30 +115,30 @@ def modify_profile():
      noise_combobox.grid(row=4, column=2)
      noise_combobox["state"] = "readonly"
      
-     def new_profile(event):
-          new_profile={}
-          new_profile['action'] = modify_action_combobox.get()
-          new_profile['light'] = light_combobox.get()
-          new_profile['temp'] = temp_combobox.get()
-          new_profile['wind'] = wind_combobox.get()
-          new_profile['noise'] = noise_combobox.get()
+     def nuevo_perfil(event):
+          nuevo_perfil={}
+          nuevo_perfil['action'] = modify_action_combobox.get()
+          nuevo_perfil['light'] = light_combobox.get()
+          nuevo_perfil['temp'] = temp_combobox.get()
+          nuevo_perfil['wind'] = wind_combobox.get()
+          nuevo_perfil['noise'] = noise_combobox.get()
           
-          def update_facts():
-            Profile.updateFacts(prolog, new_profile)
+          def actualizar_facts():
+            Profile.updateFacts(prolog, nuevo_perfil)
 
-          button_confirm= tk.Button(window4, text="Confirmar", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=update_facts)
+          button_confirm= tk.Button(window4, text="Confirmar", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=actualizar_facts)
           button_confirm.grid(row=5, column=1)
           
-     modify_action_combobox.bind("<<ComboboxSelected>>", new_profile)
-     light_combobox.bind("<<ComboboxSelected>>", new_profile)
-     temp_combobox.bind("<<ComboboxSelected>>", new_profile)
-     wind_combobox.bind("<<ComboboxSelected>>", new_profile)
-     noise_combobox.bind("<<ComboboxSelected>>", new_profile)
+     modify_action_combobox.bind("<<ComboboxSelected>>", nuevo_perfil)
+     light_combobox.bind("<<ComboboxSelected>>", nuevo_perfil)
+     temp_combobox.bind("<<ComboboxSelected>>", nuevo_perfil)
+     wind_combobox.bind("<<ComboboxSelected>>", nuevo_perfil)
+     noise_combobox.bind("<<ComboboxSelected>>", nuevo_perfil)
      
      
 
 
-def show_profile():
+def ver_perfil():
      window3 = tk.Tk()
      window3.title("Perfil")
      window3.geometry("700x1000")
@@ -146,21 +147,18 @@ def show_profile():
      label_profile = tk.Label(window3, text=profile, wraplength= 400, font=("Microsoft YaHei",10))
      label_profile.pack()
 
-     button_modify_profile= tk.Button(window3, text="Modificar Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=modify_profile)
-     button_modify_profile.place(x=290, y=650)
+     boton_modificar= tk.Button(window3, text="Modificar Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=modificar_perfil)
+     boton_modificar.place(x=290, y=650)
      
      window3.mainloop()
 
 
 
-"""
-button_simulate = tk.Button(frame1, text="Perfil", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=show_profile)
-button_simulate.place(x=20, y=100)
-"""
+
 label_welcome = tk.Label(frame1, text="  Simulador Smart Home+  ", bg='#FFFFFF', fg='#161EA1', font=("Microsoft YaHei",16, BOLD))
 label_welcome.pack(pady=10, padx=120, ipadx=20, ipady=10)
 
-button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simulate_sensors)
+button_simulate = tk.Button(frame1, text="Simular los sensores", bg='#FFCACC', font=("Microsoft YaHei",12, BOLD), command=simular_sensores)
 button_simulate.pack(padx=100, pady=5)
 button_simulate.place(x=10, y=170)
 
@@ -176,7 +174,7 @@ action_combobox["state"] = "readonly"
 label_action = tk.Label(frame1, text="Aparatos Individuales ", bg="#FFFFFF", font=("Microsoft YaHei",10))
 label_action.pack(pady=10, padx=350)
 individual_combobox = ttk.Combobox(frame1, textvariable=action_selected)
-individual_combobox["values"] = ["apagar_luces","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","ventana_1","ventana_2","cerrar_ventanas","abrir_puerta","cerrar_puerta"]
+individual_combobox["values"] = ["apagar_luces","encender_ac","apagar_ac","encender_r","apagar_r","luz_1","luz_2","luz_3","luz_4","abrir_persianas","cerrar_persianas","ventana_1","ventana_2","cerrar_ventanas","abrir_puerta","cerrar_puerta"]
 individual_combobox.pack(pady=5)
 individual_combobox["state"] = "readonly"
 
@@ -237,7 +235,7 @@ photo = ImageTk.PhotoImage(file='pianta stanza 3.png')
 label_image = tk.Label(frame3, image=photo, pady=0)
 label_image.grid()
 
-label_light = tk.Label(frame3, text= "L1, L2, L3, L4 = Luces", font=("Microsoft YaHei",10))
+label_light = tk.Label(frame3, text= "L1, L2, L3, L4 = Luces (W)", font=("Microsoft YaHei",10))
 label_light.grid()
 
 # Agrega una etiqueta para mostrar el consumo del aire acondicionado
@@ -257,7 +255,8 @@ lights_consumption_label.grid(row=i+2, column=0, pady=7, padx=10)
 lights_consumption_value_label = tk.Label(frame2, text="0 kW")  # Puedes inicializarlo en 0 kW
 lights_consumption_value_label.grid(row=i+2, column=1, pady=7, padx=10)
 
-
+label_ac = tk.Label(frame3, text= "AC = Aire Acondicionado (En ℃)", font=("Microsoft YaHei",10))
+label_ac.grid()
 label_r = tk.Label(frame3, text= "R = Radiador", font=("Microsoft YaHei",10))
 label_r.grid()
 label_windows = tk.Label(frame3, text= "W1, W2 = Ventanas (Windows)", font=("Microsoft YaHei",10))
