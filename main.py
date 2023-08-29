@@ -231,7 +231,7 @@ def decrease_temperature():
 action_combobox.bind("<<ComboboxSelected>>", select_action)
 individual_combobox.bind("<<ComboboxSelected>>", select_action)
 
-photo = ImageTk.PhotoImage(file='pianta stanza 3.png')
+photo = ImageTk.PhotoImage(file='casa pianta.png')
 label_image = tk.Label(frame3, image=photo, pady=0)
 label_image.grid()
 
