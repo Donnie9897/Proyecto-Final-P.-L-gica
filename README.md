@@ -4,11 +4,12 @@
 #                                                Simulador Smart Home
 
 ## Para instalar las dependecias
-Clona el repositorio en tu pc y ubicate en él dentro de la terminal (CMD)
+Clona el repositorio en tu pc y ubícate en él dentro de la terminal (CMD.)
 Instala primero el comando PIP (si usas windows), luego instala las dependencias dentro del archivo "requerimientos.txt"
+
 Comando: pip install requerimientos.txt
 
-## Corre el software
+## Correr el software
 Para correr el programa, simplmente usa el comando: python main.py
 
 
